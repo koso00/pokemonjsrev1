@@ -27,7 +27,7 @@ player = {
         speed : 2
       };
 
-
+player.teleport(8,12);
 $(document).ready(function(){
 joystick = new joystick("body");
 joystick.start();
