@@ -114,6 +114,7 @@ sprite.onload = function() {
 }
 
 function movecallback(){
+scriptflag = false;
 $(document).trigger("movecallback",[{x : player.x , y : player.y}]);
 console.log("move process ended");
 }
