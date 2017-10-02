@@ -1,0 +1,49 @@
+@frame_width : 100%;
+@frame_height : 100%;
+
+
+/********************************
+Z INDEXES
+********************************/
+.map { z-index : 0;}
+.player { z-index : 1;}
+.mapb { z-index : 2;}
+
+
+body {
+  margin : 0;
+  padding : 0;
+}
+.player {
+  position:absolute;
+  margin-top : -32px;
+  margin-left: -16px;
+  z-index : 1;
+  top : 0;
+  left : 0;
+  width:64px;
+  height:64px;
+}
+
+.map-wrapper {
+  overflow : scroll;
+position : relative;
+width : @frame_width;
+height: @frame_height;
+}
+
+::-webkit-scrollbar {
+    width: 0px;  /* remove scrollbar space */
+    background: transparent;  /* optional: just make scrollbar invisible */
+}
+.map {
+position : absolute;
+top  : 0;
+left : 0;
+}
+
+.mapb {
+position : absolute;
+top  : 0;
+left : 0;
+}
