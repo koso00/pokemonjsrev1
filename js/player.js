@@ -24,7 +24,8 @@ player = {
         xindex : 0,
         yindex : 0,
         oldyindex : 1,
-        speed : 2
+        speed : 2,
+        lockplayer :false
       };
 
 player.teleport(8,12);
@@ -38,7 +39,7 @@ $(document).on("keyboardpress",function(data,a){movementhandler(a)})
 $(document).on("joystick",function(data,a){movementhandler(a)})
 
 function movementhandler(a){
-  if ((player.tx == player.x)&&(player.ty == player.y)) {
+  if ((player.tx == player.x)&&(player.ty == player.y)&&(player.lockplayer == false)) {
         switch(a){
           case "right" : player.direction = 0; break;
           case "left" : player.direction = 180;break;
@@ -84,8 +85,8 @@ setInterval(function(){
     case 180:     player.xindex = 2;break;
     case 270:     player.xindex = 1;break;
   }
-  player.div.parent().scrollLeft(player.cssx - (player.div.parent().width() / 2) + 32);
-  player.div.parent().scrollTop(player.cssy - (player.div.parent().height() / 2) + 32);
+  $("body").scrollLeft(player.cssx - ($("body").width() / 2) + 32);
+  $("body").scrollTop(player.cssy - ($("body").height() / 2) + 32);
 },1000/60)
 
 

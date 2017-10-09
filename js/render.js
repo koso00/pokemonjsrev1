@@ -1,7 +1,11 @@
-$("<div>").addClass("map-wrapper").appendTo("body").on("touchmove",function(e){e.preventDefault()});
+$("<div>").addClass("map-wrapper").appendTo("body").on("touchmove",function(e){e.preventDefault()}).on("mousewheel",function(e){e.preventDefault()});
 $("<canvas>").addClass("map").attr("id","map").appendTo(".map-wrapper");
 $("<canvas>").addClass("mapb").attr("id","mapb").appendTo(".map-wrapper");
 
+
+$(window).resize(function(){
+$(".map-wrapper").width(window.outerWidth);
+})
 
 function renderMap(data,intro,mp,mpb) {
     map = data;

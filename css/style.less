@@ -1,6 +1,6 @@
 @frame_width : 100%;
 @frame_height : 100%;
-
+@textbox-width : 100%;
 
 /********************************
 Z INDEXES
@@ -8,12 +8,14 @@ Z INDEXES
 .map { z-index : 0;}
 .player { z-index : 1;}
 .mapb { z-index : 2;}
+.textbox {z-index : 3;}
 .stick {z-index : 3;}
 .joy {z-index : 4;}
 
 body {
-  margin : 0;
-  padding : 0;
+  margin : 0 0 0 0;
+  padding : 0 0 0 0;
+  overflow : scroll;
 }
 .player {
   position:absolute;
@@ -27,15 +29,16 @@ body {
 }
 
 .map-wrapper {
-  overflow : scroll;
+overflow : auto;
 position : relative;
 width : @frame_width;
 height: @frame_height;
+display : inline;
+white-space: nowrap;
 }
-
 ::-webkit-scrollbar {
-    width: 0px;  /* remove scrollbar space */
-    background: transparent;  /* optional: just make scrollbar invisible */
+    width: 0;  /* remove scrollbar space */
+  //  background: transparent;  /* optional: just make scrollbar invisible */
 }
 .map {
 position : absolute;
@@ -47,4 +50,29 @@ left : 0;
 position : absolute;
 top  : 0;
 left : 0;
+}
+
+.textbox {
+  background-color :rgba(198, 198, 200, 0.81);
+  height : 60px;
+  color : black;
+  position : fixed;
+  bottom : 0;
+  left: 0;
+  right: 0;
+  margin : 0 auto;
+  padding-left : 10%;
+  padding-right: 10%;
+  padding-top : 20px;
+  padding-bottom : 20px;
+  width : @textbox-width;
+}
+
+.script{
+  border-style : solid;
+  border-width : 1px;
+  border-color : red;
+  width  : 32px;
+  height : 32px;
+  position : absolute;
 }

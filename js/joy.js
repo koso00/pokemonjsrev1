@@ -26,7 +26,7 @@ function joystick(zone){
 
   $(zone).off("touchstart",mousedownhandler)
   $(zone).off("touchend",mouseuphandler)
-  clearInterval(refresh);
+  //if (refresh) {clearInterval(refresh);}
   }
   this.deg = function(){
     return deg;
