@@ -7,6 +7,8 @@ $(window).resize(function(){
 $(".map-wrapper").width(window.outerWidth);
 })
 
+map_dir = "http://koso00.altervista.org"
+
 function renderMap(data,intro,mp,mpb) {
     map = data;
     tilewidth = 32;
@@ -17,7 +19,7 @@ function renderMap(data,intro,mp,mpb) {
       map.tilesets[i].image;
       image[i] = new Image();
       var s = map.tilesets[i].image.split("/");
-      var m ="map/tilesets/"+ s[s.length -1 ];
+      var m =map_dir + "map/tilesets/"+ s[s.length -1 ];
       image[i].src = m;
       image[i].onload = function() {
         count--;

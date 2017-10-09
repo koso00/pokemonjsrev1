@@ -1,3 +1,5 @@
+function spawnplayer(){
+
 player = {
         div : $("<canvas>").attr("id","player").addClass("player").appendTo(".map-wrapper"),
         x : 0,
@@ -157,4 +159,5 @@ function define_collisions(map){
 
           }
   return r;
+}
 }
