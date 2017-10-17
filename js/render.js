@@ -1,29 +1,7 @@
 $("<div>").addClass("map-wrapper").appendTo("body").on("touchmove",function(e){e.preventDefault()});
 $("<canvas>").addClass("map").attr("id","map").appendTo(".map-wrapper");
-$("<canvas>").addClass("mapb").attr("id","mapb").appendTo(".map-wrapper");
 
-
-function renderMap(data,intro,mp,mpb) {
-    map = data;
-    tilewidth = 32;
-    tileheight = 32;
-    image = new Array();
-    var count = map.tilesets.length;
-    for (var i = 0; i < map.tilesets.length; i++) {
-      map.tilesets[i].image;
-      image[i] = new Image();
-      var s = map.tilesets[i].image.split("/");
-      var m ="map/tilesets/"+ s[s.length -1 ];
-      image[i].src = m;
-      image[i].onload = function() {
-        count--;
-        if (count == 0) {
-          draw();
-        }
-      }
-    }
-
-    function gettile(tileIndex) {
+function gettile(tileIndex) {
       var pkt = {
         "img": null,
         "px": 0,
@@ -44,15 +22,53 @@ function renderMap(data,intro,mp,mpb) {
       return pkt;
     }
 
+
+function render(data,intro,mp) {
+    map = data;
+    tilewidth = 32;
+    tileheight = 32;
+    image = new Array();
+    sprites = map.tilesets
+    var count = map.tilesets.length + 1;
+    var sprite = new Image();
+    sprite.src = "assets/player/1.png";
+    sprite.onload = function() {
+        count--;
+        if (count == 0) {
+          draw();
+          console.log("drawing");
+        }
+      }
+    for (var i = 0; i < map.tilesets.length; i++) {
+      map.tilesets[i].image;
+      image[i] = new Image();
+      var s = map.tilesets[i].image.split("/");
+      var m ="map/tilesets/"+ s[s.length -1 ];
+      image[i].src = m;
+      image[i].onload = function() {
+        count--;
+        if (count == 0) {
+
+          console.log("drawing");
+          draw();
+        }
+      }
+    }
+
+    
     function draw() {
+
+
+      setInterval(function(){
       canvas = document.getElementById(mp);
       ctx = canvas.getContext('2d');
-      canvas.width = map.width * tilewidth;
-      canvas.height = map.height * tileheight;
+      canvas.width = window.outerWidth;
+      canvas.height = window.outerHeight;
       ctx.fillStyle = "#ffffff";
       ctx.imageSmoothingEnabled = false;
+
+      minworldy = window.outerWidth / tilewidth; 
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-      maploaded = true;
       if (map.layers[i] != "WalkBehind") {
         for (i = 0; i < map.layers.length; i++) {
           var dat = map.layers[i].data;
@@ -63,18 +79,28 @@ function renderMap(data,intro,mp,mpb) {
 
             worldX = (tileIDX - (map.layers[i].width * (worldY / tilewidth))) * tilewidth;
 
+
             ctx.drawImage(image[tPKT.img], tPKT.px, tPKT.py, map.tilewidth, map.tileheight, worldX, worldY, tilewidth, tileheight);
             // console.log(tPKT.px + " " + tPKT.py + " " + worldX + " "+ worldY );
           }
         }
       }
-      canvas = document.getElementById(mpb);
-      ctx = canvas.getContext('2d');
-      canvas.width = map.width * tilewidth;
-      canvas.height = map.height * tileheight;
-      ctx.fillStyle = "rgba(255,255,255,0)";
-      ctx.imageSmoothingEnabled = false;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+
+      if ((player.ty != player.y)||(player.tx != player.x)) {
+          if ((player.yindex == 1) || (player.yindex == 2))
+          {player.oldyindex = player.yindex ; player.yindex  = 0}
+          else
+          { if (player.oldyindex == 1){player.yindex = 2}
+          else{player.yindex = 1}
+          }
+          }else{
+          player.yindex = 0;}
+        if ((key.s===true) && (moving == true)) { ctx.drawImage(sprite, 1 + (player.yindex+4) * 32 + (player.yindex+4) , 1+ player.xindex * 32 + player.xindex , 32, 32, player.cssx, player.cssy, player.cssx + 64, player.cssy + 64)}
+        else {ctx.drawImage(sprite, 1 + player.yindex * 32 + player.yindex , 1+ player.xindex * 32 + player.xindex , 32, 32, player.cssx, player.cssy, 64,64)}
+
+
+
       for (i = 0; i < map.layers.length; i++) {
         if (map.layers[i].name === "WalkBehind") {
 
@@ -83,14 +109,15 @@ function renderMap(data,intro,mp,mpb) {
             var tID = dat[tileIDX];
             var tPKT = gettile(tID);
             worldY = Math.floor(tileIDX / map.layers[i].width) * tileheight;
-
             worldX = (tileIDX - (map.layers[i].width * (worldY / tilewidth))) * tilewidth;
-
             ctx.drawImage(image[tPKT.img], tPKT.px, tPKT.py, map.tilewidth, map.tileheight, worldX, worldY, tilewidth, tileheight);
             // console.log(tPKT.px + " " + tPKT.py + " " + worldX + " "+ worldY );
           }
         }
       }
+
+
+},100)
 
     }
 

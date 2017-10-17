@@ -1,5 +1,4 @@
 player = {
-        div : $("<canvas>").attr("id","player").addClass("player").appendTo(".map-wrapper"),
         x : 0,
         y : 0,
         cssx : 0,
@@ -26,7 +25,6 @@ player = {
         oldyindex : 1,
         speed : 2
       };
-
 player.teleport(8,12);
 $(document).ready(function(){
 joystick = new joystick("body");
@@ -76,7 +74,7 @@ setInterval(function(){
 
   }
   }
-  player.div.css({top : player.cssy , left : player.cssx});
+  
 
   switch (player.direction) {
     case 0:       player.xindex = 3;break;
@@ -84,8 +82,7 @@ setInterval(function(){
     case 180:     player.xindex = 2;break;
     case 270:     player.xindex = 1;break;
   }
-  player.div.parent().scrollLeft(player.cssx - (player.div.parent().width() / 2) + 32);
-  player.div.parent().scrollTop(player.cssy - (player.div.parent().height() / 2) + 32);
+
 },1000/60)
 
 
@@ -93,24 +90,7 @@ var sprite = new Image();
 sprite.src = "assets/player/1.png";
 sprite.onload = function() {
     setInterval(function () {
-        if ((player.ty != player.y)||(player.tx != player.x)) {
-          if ((player.yindex == 1) || (player.yindex == 2))
-          {player.oldyindex = player.yindex ; player.yindex  = 0}
-          else
-          { if (player.oldyindex == 1){player.yindex = 2}
-          else{player.yindex = 1}
-          }
-          }else{
-          player.yindex = 0;}
-        c = document.getElementById("player");
-        c.width = 64;
-        c.height = 64;
-        ctx = c.getContext("2d");
-        ctx.clearRect(0, 0, 64, 64);
-        ctx.imageSmoothingEnabled = false;
-        if ((key.s===true) && (moving == true)) { ctx.drawImage(sprite, 1 + (player.yindex+4) * 32 + (player.yindex+4) , 1+ player.xindex * 32 + player.xindex , 32, 32, 0, 0, 64, 64)}
-        else {ctx.drawImage(sprite, 1 + player.yindex * 32 + player.yindex , 1+ player.xindex * 32 + player.xindex , 32, 32, 0, 0, 64, 64)}
-  },100);
+          },100);
 }
 
 function movecallback(){

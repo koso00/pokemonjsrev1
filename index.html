@@ -11,11 +11,10 @@
 <script src="js/scriptcore.js"></script>
 <script>
 $.getJSON("map/CITTA_INIZIALE.json",function(data){
-  renderMap(data,false,"map","mapb");
+  render(data,false,"map");
   collision = define_collisions(data);
   scripts = define_scripts(data.scripts);
   map = data;
-  
 })
 </script>
 <script src="js/player.js"></script>
