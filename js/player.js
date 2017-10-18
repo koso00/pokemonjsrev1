@@ -25,7 +25,9 @@ player = {
         oldyindex : 1,
         speed : 2
       };
-player.teleport(8,12);
+camera = { x : 0, 
+           y : 0};
+player.teleport(8,16);
 $(document).ready(function(){
 joystick = new joystick("body");
 joystick.start();
@@ -82,16 +84,24 @@ setInterval(function(){
     case 180:     player.xindex = 2;break;
     case 270:     player.xindex = 1;break;
   }
-
+camera.x = player.cssx;
+camera.y = player.cssy;
 },1000/60)
 
 
-var sprite = new Image();
-sprite.src = "assets/player/1.png";
-sprite.onload = function() {
-    setInterval(function () {
-          },100);
-}
+setInterval(function(){
+
+           if ((player.ty != player.y)||(player.tx != player.x)) {
+          if ((player.yindex == 1) || (player.yindex == 2))
+          {player.oldyindex = player.yindex ; player.yindex  = 0}
+          else
+          { if (player.oldyindex == 1){player.yindex = 2}
+          else{player.yindex = 1}
+          }
+          }else{
+          player.yindex = 0;}
+
+        },100)
 
 function movecallback(){
 scriptflag = false;

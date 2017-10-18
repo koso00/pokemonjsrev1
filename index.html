@@ -5,16 +5,17 @@
 <script src="js/jsonsql.js"></script>
 <script src="js/keyboardhandler.js"></script>
 <script src="js/joy.js"></script>
-<body>
+<body >
 </body>
+
+<script src="js/player.js"></script>
 <script src="js/render.js"></script>
 <script src="js/scriptcore.js"></script>
 <script>
 $.getJSON("map/CITTA_INIZIALE.json",function(data){
   render(data,false,"map");
   collision = define_collisions(data);
-  scripts = define_scripts(data.scripts);
+  //scripts = define_scripts(data.scripts);
   map = data;
 })
 </script>
-<script src="js/player.js"></script>

@@ -27,6 +27,8 @@ function render(data,intro,mp) {
     map = data;
     tilewidth = 32;
     tileheight = 32;
+    
+
     image = new Array();
     sprites = map.tilesets
     var count = map.tilesets.length + 1;
@@ -59,15 +61,24 @@ function render(data,intro,mp) {
     function draw() {
 
 
+      
       setInterval(function(){
+    
+    windoww = Math.round($(window).width()/32)*32;
+    windowh = Math.round($(window).height()/32)*32;
+    
+    minworldx = camera.x - windoww/2 - 64;
+    minworldy = camera.y - windowh/2 - 64;
+    maxworldx = camera.x + windoww/2 + 64;
+    maxworldy = camera.y + windowh/2 + 64;
       canvas = document.getElementById(mp);
       ctx = canvas.getContext('2d');
-      canvas.width = window.outerWidth;
-      canvas.height = window.outerHeight;
+      canvas.width = $(window).width()
+      canvas.height = $(window).height();
       ctx.fillStyle = "#ffffff";
       ctx.imageSmoothingEnabled = false;
 
-      minworldy = window.outerWidth / tilewidth; 
+      
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       if (map.layers[i] != "WalkBehind") {
         for (i = 0; i < map.layers.length; i++) {
@@ -78,28 +89,23 @@ function render(data,intro,mp) {
             worldY = Math.floor(tileIDX / map.layers[i].width) * tileheight;
 
             worldX = (tileIDX - (map.layers[i].width * (worldY / tilewidth))) * tilewidth;
-
-
-            ctx.drawImage(image[tPKT.img], tPKT.px, tPKT.py, map.tilewidth, map.tileheight, worldX, worldY, tilewidth, tileheight);
+            
+            if (((worldX > minworldx)&&(worldX < maxworldx)) && ((worldY > minworldy&&(worldY < maxworldy))))
+            {
+            ctx.drawImage(image[tPKT.img], tPKT.px, tPKT.py, map.tilewidth, map.tileheight, worldX - minworldx, worldY - minworldy, tilewidth, tileheight);
+            }
             // console.log(tPKT.px + " " + tPKT.py + " " + worldX + " "+ worldY );
           }
         }
       }
 
-
-      if ((player.ty != player.y)||(player.tx != player.x)) {
-          if ((player.yindex == 1) || (player.yindex == 2))
-          {player.oldyindex = player.yindex ; player.yindex  = 0}
-          else
-          { if (player.oldyindex == 1){player.yindex = 2}
-          else{player.yindex = 1}
-          }
-          }else{
-          player.yindex = 0;}
-        if ((key.s===true) && (moving == true)) { ctx.drawImage(sprite, 1 + (player.yindex+4) * 32 + (player.yindex+4) , 1+ player.xindex * 32 + player.xindex , 32, 32, player.cssx, player.cssy, player.cssx + 64, player.cssy + 64)}
-        else {ctx.drawImage(sprite, 1 + player.yindex * 32 + player.yindex , 1+ player.xindex * 32 + player.xindex , 32, 32, player.cssx, player.cssy, 64,64)}
-
-
+        
+           if (((player.ty != player.y)||(player.tx != player.x))) {
+        if ((key.s===true) && (moving == true)) { ctx.drawImage(sprite, 1 + (player.yindex+4) * 32 + (player.yindex+4) , 1+ player.xindex * 32 + player.xindex , 32, 32, player.cssx - minworldx,player.cssy -  minworldy, 64, 64)}
+        else {ctx.drawImage(sprite, 1 + player.yindex * 32 + player.yindex , 1+ player.xindex * 32 + player.xindex , 32, 32, player.cssx - minworldx, player.cssy - minworldy, 64,64)}
+} else{
+    ctx.drawImage(sprite, 1 + player.yindex * 32 + player.yindex , 1+ player.xindex * 32 + player.xindex , 32, 32, player.cssx - minworldx, player.cssy - minworldy, 64,64)
+}
 
       for (i = 0; i < map.layers.length; i++) {
         if (map.layers[i].name === "WalkBehind") {
@@ -109,16 +115,19 @@ function render(data,intro,mp) {
             var tID = dat[tileIDX];
             var tPKT = gettile(tID);
             worldY = Math.floor(tileIDX / map.layers[i].width) * tileheight;
-            worldX = (tileIDX - (map.layers[i].width * (worldY / tilewidth))) * tilewidth;
-            ctx.drawImage(image[tPKT.img], tPKT.px, tPKT.py, map.tilewidth, map.tileheight, worldX, worldY, tilewidth, tileheight);
-            // console.log(tPKT.px + " " + tPKT.py + " " + worldX + " "+ worldY );
+            worldX = (tileIDX - (map.layers[i].width * (worldY / tilewidth))) * tilewidth; 
+
+             if (((worldX > minworldx)&&(worldX < maxworldx)) && ((worldY > minworldy&&(worldY < maxworldy))))
+            {
+            ctx.drawImage(image[tPKT.img], tPKT.px, tPKT.py, map.tilewidth, map.tileheight, worldX - minworldx, worldY - minworldy, tilewidth, tileheight);
+            }// console.log(tPKT.px + " " + tPKT.py + " " + worldX + " "+ worldY );
           }
         }
       }
 
 
-},100)
+},1000/60)
 
-    }
+}
 
 }
