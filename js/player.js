@@ -55,39 +55,9 @@ function movementhandler(a){
 }
 }
 }
-setInterval(function(){
 
-  if(player.tx != player.x)
-  {
-  if (player.cssx == player.tx * 32) {player.x = player.tx ;
-  if (player.y == player.ty) { movecallback()}
-  }
-  else {player.cssx +=player.speed*(player.tx - player.x);
 
-  }
-  }
-
-  if(player.ty != player.y)
-  {
-  if (player.cssy== player.ty * 32) {player.y = player.ty;
-  if (player.x == player.tx) { movecallback()}
-  }
-  else {player.cssy += player.speed*(player.ty - player.y);
-
-  }
-  }
-  
-
-  switch (player.direction) {
-    case 0:       player.xindex = 3;break;
-    case 90:      player.xindex = 0;break;
-    case 180:     player.xindex = 2;break;
-    case 270:     player.xindex = 1;break;
-  }
-camera.x = player.cssx;
-camera.y = player.cssy;
-},1000/60)
-
+requestAnimationFrame(moveloop)
 
 setInterval(function(){
 

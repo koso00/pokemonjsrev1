@@ -5,7 +5,7 @@ function joystick(zone){
   mouse = {
     left : 0,top : 0
   }
-
+  var refresh;
   bodyset = false;
   stickhandler = false;
   this.start = function()

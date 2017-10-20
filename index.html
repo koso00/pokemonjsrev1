@@ -15,7 +15,7 @@
 $.getJSON("map/CITTA_INIZIALE.json",function(data){
   render(data,false,"map");
   collision = define_collisions(data);
-  //scripts = define_scripts(data.scripts);
+  scripts = define_scripts(data);
   map = data;
 })
 </script>

@@ -1,5 +1,4 @@
-$("<div>").addClass("map-wrapper").appendTo("body").on("touchmove",function(e){e.preventDefault()});
-$("<canvas>").addClass("map").attr("id","map").appendTo(".map-wrapper");
+$("<canvas>").addClass("map").attr("id","map").appendTo("body");
 
 function gettile(tileIndex) {
       var pkt = {
@@ -50,9 +49,8 @@ function render(data,intro,mp) {
       image[i].onload = function() {
         count--;
         if (count == 0) {
-
           console.log("drawing");
-          draw();
+          requestAnimationFrame(draw);
         }
       }
     }
@@ -62,14 +60,13 @@ function render(data,intro,mp) {
 
 
       
-      setInterval(function(){
     
     windoww = Math.round($(window).width()/32)*32;
     windowh = Math.round($(window).height()/32)*32;
     
-    minworldx = camera.x - windoww/2 - 64;
-    minworldy = camera.y - windowh/2 - 64;
-    maxworldx = camera.x + windoww/2 + 64;
+    minworldx = camera.x - windoww/2 ;
+    minworldy = camera.y - windowh/2 ;
+    maxworldx = camera.x + windoww/2 ;
     maxworldy = camera.y + windowh/2 + 64;
       canvas = document.getElementById(mp);
       ctx = canvas.getContext('2d');
@@ -90,7 +87,7 @@ function render(data,intro,mp) {
 
             worldX = (tileIDX - (map.layers[i].width * (worldY / tilewidth))) * tilewidth;
             
-            if (((worldX > minworldx)&&(worldX < maxworldx)) && ((worldY > minworldy&&(worldY < maxworldy))))
+            if (((worldX + 32> minworldx)&&(worldX - 32 < maxworldx)) && ((worldY + 32 > minworldy&&(worldY -32 < maxworldy))))
             {
             ctx.drawImage(image[tPKT.img], tPKT.px, tPKT.py, map.tilewidth, map.tileheight, worldX - minworldx, worldY - minworldy, tilewidth, tileheight);
             }
@@ -101,10 +98,10 @@ function render(data,intro,mp) {
 
         
            if (((player.ty != player.y)||(player.tx != player.x))) {
-        if ((key.s===true) && (moving == true)) { ctx.drawImage(sprite, 1 + (player.yindex+4) * 32 + (player.yindex+4) , 1+ player.xindex * 32 + player.xindex , 32, 32, player.cssx - minworldx,player.cssy -  minworldy, 64, 64)}
-        else {ctx.drawImage(sprite, 1 + player.yindex * 32 + player.yindex , 1+ player.xindex * 32 + player.xindex , 32, 32, player.cssx - minworldx, player.cssy - minworldy, 64,64)}
+        if ((key.s===true) && (moving == true)) { ctx.drawImage(sprite, 1 + (player.yindex+4) * 32 + (player.yindex+4) , 1+ player.xindex * 32 + player.xindex , 32, 32, player.cssx - minworldx - 16,player.cssy -  minworldy - 32, 64, 64)}
+        else {ctx.drawImage(sprite, 1 + player.yindex * 32 + player.yindex , 1+ player.xindex * 32 + player.xindex , 32, 32, player.cssx - minworldx - 16 , player.cssy - minworldy - 32, 64,64)}
 } else{
-    ctx.drawImage(sprite, 1 + player.yindex * 32 + player.yindex , 1+ player.xindex * 32 + player.xindex , 32, 32, player.cssx - minworldx, player.cssy - minworldy, 64,64)
+    ctx.drawImage(sprite, 1 + player.yindex * 32 + player.yindex , 1+ player.xindex * 32 + player.xindex , 32, 32, player.cssx - minworldx - 16 , player.cssy - minworldy - 32, 64,64)
 }
 
       for (i = 0; i < map.layers.length; i++) {
@@ -126,8 +123,38 @@ function render(data,intro,mp) {
       }
 
 
-},1000/60)
 
+
+  if(player.tx != player.x)
+  {
+  if (player.cssx == player.tx * 32) {player.x = player.tx ;
+  if (player.y == player.ty) { movecallback()}
+  }
+  else {player.cssx +=player.speed*(player.tx - player.x);
+
+  }
+  }
+
+  if(player.ty != player.y)
+  {
+  if (player.cssy== player.ty * 32) {player.y = player.ty;
+  if (player.x == player.tx) { movecallback()}
+  }
+  else {player.cssy += player.speed*(player.ty - player.y);
+
+  }
+  }
+  
+
+  switch (player.direction) {
+    case 0:       player.xindex = 3;break;
+    case 90:      player.xindex = 0;break;
+    case 180:     player.xindex = 2;break;
+    case 270:     player.xindex = 1;break;
+  }
+camera.x = player.cssx;
+camera.y = player.cssy;
+ requestAnimationFrame(draw);
 }
 
 }
